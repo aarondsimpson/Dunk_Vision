@@ -52,10 +52,7 @@ class CourtFrame(tk.Frame):
         #Add REDO Buttons
         self.redo_button = tk.Button(self.top_bar, text="Redo", state="disabled", command=self.undo_action)
         self.redo_button.grid(row=0, column=1, padx=5, pady=5) 
-        ##########################################################
-
-
-
+       
 
         #########################SIDE-BAR#########################
         self.sidebar = tk.Frame(self, bg="#BF9F8F", width=150)
@@ -76,11 +73,19 @@ class CourtFrame(tk.Frame):
         )
         team_dropdown.grid(row=0, column=0, pady=(10, 5), sticky = "ew")
 
+        #Home and Away Rosters 
+        self.rosters = {
+            "My Team": ["Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center"],
+            "Their Team": ["Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center"],
+        }
+
+        #Player list container
+        self.player_list_frame = tk.Frame(self.sidebar, bg="#BF9F8F")
+        self.player_list_frame.grid(row=1, column=0, sticky="nsew", pady=(10,10))
+
         #Subframe for holding default player buttons 
         self.player_buttons = []
-        default_players = ["Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center"]
-        for player in default_players:
-            self.add_player_button(player)
+        self.selected_player_button = None #track selection
 
         #Add ADD PLAYER button 
         self.add_button = tk.Button(self.sidebar, text="Add", command=self.add_player_dialog)
@@ -89,11 +94,12 @@ class CourtFrame(tk.Frame):
         #Add REMOVE PLAYER button
         self.remove_button = tk.Button(self.sidebar, text="Remove", state="disabled", command=self.remove_selected_player)
         self.remove_button.grid(row=3, column=0, pady=5, sticky="ew")
-        ##########################################################
 
+        #Populate initial list and team switch 
+        self.refresh_player_list()
+        self.selected_team.trace_add("write", lambda *_: self.on_team_changes())
 
-
-
+    
         #########################COURT-DISPLAY####################
         self.canvas = CourtCanvas(self, court_type=self.court_type)
         self.canvas.grid(row=1, column=1, sticky="nsew")
