@@ -61,6 +61,10 @@ class CourtFrame(tk.Frame):
         self.sidebar = tk.Frame(self, bg="#BF9F8F", width=150)
         self.sidebar.grid(row=1, column=0, sticky="nsew")
 
+        #Sidebar grid configuration
+        self.sidebar.grid_rowconfigure(1, weight=1)
+        self.sidebar.grid_columnconfigure(0, weight=1)
+
         #Team Selector
         self.selected_team = tk.StringVar(value="My Team")
         team_dropdown = ttk.OptionMenu(
