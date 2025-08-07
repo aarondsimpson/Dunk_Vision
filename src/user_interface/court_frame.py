@@ -134,12 +134,11 @@ class CourtFrame(tk.Frame):
         self.selected_player_button = button
         self.remove_button.config(state="normal")
 
-    
+
     def add_player_dialog(self):
         name = simpledialog.askstring("Add Player", "Enter Player Name:", parent=self)
         if name: 
             self.add_player(name.strip())
-    
     #
     def add_player(self, name): 
         if not name: 
