@@ -1,6 +1,7 @@
 ### Holds and organizes the UI elements (top bar, side bar, export area) 
 
 import tkinter as tk 
+from tkinter import ttk
 from src.user_interface.court_canvas import CourtCanvas ### CourtCanvas is now part of court_frame
 
 class CourtFrame(tk.Frame):
