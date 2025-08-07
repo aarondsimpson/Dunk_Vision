@@ -100,7 +100,7 @@ EXPORT
 
 # Attributions 
 Load Image by Matt Cole on Vecteezy [https://www.vecteezy.com/members/graphicsrf]
-Light Mode Court Image by Praeqpailin Phonsri [https://www.vecteezy.com/members/lifestyle-graphic]
+Light Mode Court Image by Praewpailin Phonsri [https://www.vecteezy.com/members/lifestyle-graphic]
 
 
 # Testing 
