@@ -3,6 +3,7 @@
 import tkinter as tk 
 from tkinter import ttk, simpledialog, messagebox
 from src.user_interface.court_canvas import CourtCanvas ### CourtCanvas is now part of court_frame
+from dialogs.player_dialogs import prompt_add_player, confirm_remove_player
 
 class CourtFrame(tk.Frame):
     def __init__(self, master, court_type):
@@ -136,7 +137,7 @@ class CourtFrame(tk.Frame):
 
 
     def add_player_dialog(self):
-        name = simpledialog.askstring("Add Player", "Enter Player Name:", parent=self)
+        name = prompt_add_player(self)
         if name: 
             self.add_player(name.strip())
     #
@@ -152,7 +153,7 @@ class CourtFrame(tk.Frame):
         if not self.selected_player_button: 
             return
         name = self.selected_player_button["text"]
-        if messagebox.askyesno("Confirm", f"Remove {name}?"):
+        if confirm_remove_player(self,name):
             roster = self.rosters[self.selected_team.get()]
             if name in roster: 
                 roster.remove(name)
