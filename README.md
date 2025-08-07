@@ -76,6 +76,7 @@ EXPORT
 - Switch between half-court view and full-court view at load
 - Light mode v dark mode with different court designs for courtside use
 - Load files from third-party cloud storage, like OneDrive.
+- Add load screen for aesthetics and to address factors like player profiles and light or dark mode before entering
 
 # Use Cases 
 - Coaches
@@ -95,6 +96,12 @@ EXPORT
 # Run Instructions 
 
 # Project Structure
+
+
+# Attributions 
+Load Image by Matt Cole on Vecteezy [https://www.vecteezy.com/members/graphicsrf]
+Light Mode Court Image by Praeqpailin Phonsri [https://www.vecteezy.com/members/lifestyle-graphic]
+
 
 # Testing 
 
