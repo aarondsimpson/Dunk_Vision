@@ -16,13 +16,21 @@ class CourtCanvas(tk.Frame):
         self.project_root = os.path.dirname(os.path.abspath(__file__))
         self._load_court_image()
 
-        self.canvas = tk.Canvas(self, width=800, height=500)
+        self.canvas = tk.Canvas(self)
         self.canvas.grid(row=0,column=0)
-
         self.load_and_display_image()
+
 
     def load_and_display_image(self):
         image = Image.open(self.image_path)
-        image = Image.resize((800,500))
+
+        original_width, original_height = image.size
+        aspect_ratio = original_width / original_height
+        target_width = 700
+        target_height = int(target_width / aspect_ratio)
+
+        image = image.resize((target_width, target_height), Image.LANCZOS)
         self.photo_image = ImageTk.PhotoImage(image)
+
+        self.canvas.config(width=target_width, height=target_height)
         self.canvas.create_image(0,0, anchor="nw", image=self.photo_image)
