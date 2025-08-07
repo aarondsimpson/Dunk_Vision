@@ -15,11 +15,14 @@ class CourtFrame(tk.Frame):
         self.grid_columnconfigure(0, weight=0) #Side Bar
         self.grid_columnconfigure(1, weight=1) #Court Canvas
         self.grid_columnconfigure(2, weight=0) #Export Panel
+        self.grid_columnconfigure(2, weight=1) #Stretch Remainder
 
 
         #########################TOP-BAR#########################
         self.top_bar = tk.Frame(self, bg="lightgrey", height=50)
         self.top_bar.grid(row=0, column=0, columnspan=3, sticky="nsew")
+        self.top_bar.grid_propagate(False) # Prevent shrinking if widgets are small
+
         #Adding GAME QUARTER buttons
         for i, q in enumerate(["Q1","Q2","Q3","Q4"]):
             btn = tk.Button(self.top_bar, text=q, width=6)
@@ -37,6 +40,12 @@ class CourtFrame(tk.Frame):
         for i, export_type in enumerate(["Image", "JSON", "CSV"]):
             export_btn = tk.Button(self.top_bar, text=export_type, width=6)
             export_btn.grid(row=0, column=7+i, padx=2)
+        #Add UNDO Buttons
+        self.undo_button = tk.Button(self.top_bar, text="Undo", state="disabled", command=self.undo_action)
+        self.undo_button.grid(row=0, column=0, padx=5, pady=5)
+        #Add REDO Buttons
+        self.redo_button = tk.Button(self.top_bar, text="Redo", state="disabled", command=self.undo_action)
+        self.redo_button.grid(row=0, column=1, padx=5, pady=5) 
         
 
         #########################SIDE-BAR#########################
