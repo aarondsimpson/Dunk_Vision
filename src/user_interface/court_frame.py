@@ -19,7 +19,7 @@ class CourtFrame(tk.Frame):
 
 
         #########################TOP-BAR#########################
-        self.top_bar = tk.Frame(self, bg="lightgrey", height=50)
+        self.top_bar = tk.Frame(self, bg="#BF9F8F", height=50)
         self.top_bar.grid(row=0, column=0, columnspan=3, sticky="nsew")
         self.top_bar.grid_propagate(False) # Prevent shrinking if widgets are small
 
@@ -46,18 +46,23 @@ class CourtFrame(tk.Frame):
         #Add REDO Buttons
         self.redo_button = tk.Button(self.top_bar, text="Redo", state="disabled", command=self.undo_action)
         self.redo_button.grid(row=0, column=1, padx=5, pady=5) 
-        
+        ##########################################################
+
+
+
 
         #########################SIDE-BAR#########################
-        self.sidebar = tk.Frame(self, bg="pink", width=150)
+        self.sidebar = tk.Frame(self, bg="#BF9F8F", width=150)
         self.sidebar.grid(row=1, column=0, sticky="nsew")
+        ##########################################################
 
 
 
-        #########################COURT-DISPLAY#########################
+
+        #########################COURT-DISPLAY####################
         self.canvas = CourtCanvas(self, court_type=self.court_type)
         self.canvas.grid(row=1, column=1, sticky="nsew")
-
+        ##########################################################
 
         
 
