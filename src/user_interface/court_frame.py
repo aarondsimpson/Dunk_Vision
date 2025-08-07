@@ -104,8 +104,59 @@ class CourtFrame(tk.Frame):
         #########################COURT-DISPLAY####################
         self.canvas = CourtCanvas(self, court_type=self.court_type)
         self.canvas.grid(row=1, column=1, sticky="nsew")
-        ##########################################################
-
         
 
- 
+        #########################HELPER-FUNCTIONS####################     
+    #when a different team (home/away) is selected, the current player deselects, the remove button becomes unclickable, and the team list refreshes 
+    def on_team_change(self): 
+        self.selected_player_button = None
+        self.remove_button.config(state="disabled")
+        self.refresh_player_list() 
+
+    #When the player list refreshes, existing player buttons are removed and the correct roster is rebuilt
+    def refresh_player_list(self):
+        for b in self.player_buttons: 
+            b.destroy()
+        self.player_buttons.clear()
+
+        roster = self.rosters[self.selected_team.get()]
+        for idx, name in enumerate(roster):
+            btn = tk.Button(self.player_list_frame, text=name, anchor="w")
+            btn.grid(row=idx, column=0, sticky="ew", pady=2)
+            btn.bind("<Button-1>", lambda e, b=btn: self.select_player(b))
+            self.player_buttons.append(btn)
+
+    #
+    def select_player(self, button): 
+        for b in self.player_buttons: 
+            b.config(relief="raised")
+        button.config(relief="sunken")
+        self.selected_player_button = button
+        self.remove_button.config(state="normal")
+
+    #
+    def add_player_dialog(self):
+        name = simpledialog.askstring("Add Player", "Enter Player Name:", parent=self)
+        if name: 
+            self.add_player(name.strip())
+    
+    #
+    def add_player(self, name): 
+        if not name: 
+            return 
+        roster = self.rosters[self.selected_team.get()]
+        roster.append(name)
+        self.refresh_player_list() 
+
+    #
+    def remove_selected_player(self):
+        if not self.selected_player_button: 
+            return
+        name = self.selected_player_button["text"]
+        if messagebox.askyesno("Confirm", f"Remove {name}?"):
+            roster - self.rosters[self.selected_team.get()]
+            if name in roster: 
+                roster.remove(name)
+            self.selected_player_button = None
+            self.remove_button.config(state="disabled")
+            self.refresh_player_list()
