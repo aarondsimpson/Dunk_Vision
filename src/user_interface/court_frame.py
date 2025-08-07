@@ -154,7 +154,7 @@ class CourtFrame(tk.Frame):
             return
         name = self.selected_player_button["text"]
         if messagebox.askyesno("Confirm", f"Remove {name}?"):
-            roster - self.rosters[self.selected_team.get()]
+            roster = self.rosters[self.selected_team.get()]
             if name in roster: 
                 roster.remove(name)
             self.selected_player_button = None
