@@ -1,7 +1,7 @@
 ###Coordinates GUI window (size, title, layout)
 
 import tkinter as tk
-from src.user_interface.court_canvas import CourtCanvas
+from src.user_interface.court_frame import CourtFrame
 
 class DunkVisionApp(tk.Tk):
     def __init__(self):
@@ -33,5 +33,5 @@ class DunkVisionApp(tk.Tk):
         self.grid_rowconfigure(0,weight=1)
         self.grid_columnconfigure(0,weight=1)
 
-        self.court_canvas = CourtCanvas(self, court_type=court_type)
-        self.court_canvas.grid(row=0, column=0, sticky="nsew")
+        self.court_frame = CourtCanvas(self, court_type=court_type)
+        self.court_frame.grid(row=0, column=0, sticky="nsew")
