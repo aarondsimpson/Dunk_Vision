@@ -79,10 +79,12 @@ class CourtFrame(tk.Frame):
             self.add_player_button(player)
 
         #Add ADD PLAYER button 
-
-
+        self.add_button = tk.Button(self.sidebar, text="Add", command=self.add_player_dialog)
+        self.add_button.grid(row=2, column=0, pady=5, sticky="ew")
+        
         #Add REMOVE PLAYER button
-
+        self.remove_button = tk.Button(self.sidebar, text="Remove", state="disabled", command=self.remove_selected_player)
+        self.remove_button.grid(row=3, column=0, pady=5, sticky="ew")
         ##########################################################
 
 
