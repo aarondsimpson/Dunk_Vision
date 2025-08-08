@@ -66,7 +66,7 @@ class CourtCanvas(tk.Frame):
         assets_dir = self._find_assets_dir()
 
         court = (self.court_type or "half").strip().lower()
-        img_name = "half_court.jpeg" if court == "half" else "full_court.jpeg"
+        img_name = "half_court.jpg" if court == "half" else "full_court.jpg"
 
         self.image_path = assets_dir / img_name
         if not self.image_path.exists():
