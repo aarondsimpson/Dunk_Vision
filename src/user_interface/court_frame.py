@@ -153,7 +153,8 @@ class CourtFrame(tk.Frame):
     #When the player list refreshes, existing player buttons are removed and the correct roster is rebuilt
     def refresh_player_list(self):
         for b in self.player_buttons: 
-            b.destroy()
+            if b.winfo_exists():
+                b.destroy()
         self.player_buttons.clear()
 
         roster = self.rosters[self.selected_team.get()]
@@ -163,8 +164,8 @@ class CourtFrame(tk.Frame):
                 text=name,
                 bg=self.player_btn_bg,
                 relief="raised",
-                command=lambda b=btn: self.select_player(b)
             )
+            btn.config(command=lambda b=btn: self.select_player(b))
             btn.grid(row=idx, column=0, sticky="ew", pady=2)
             self.player_buttons.append(btn)
 
