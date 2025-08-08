@@ -240,7 +240,7 @@ class CourtFrame(tk.Frame):
                 evt["x"]-r, evt["y"]-r, 
                 evt["x"]+r, evt["y"]+r, 
                 fill="d9534f", outline="",
-                tags=("shot",),
+                tags=("shot"),
             )
         self.undo_button.cofig(state=("normal" if self.history else "disabled"))
         self.redo_button.cofig(state=("normal" if self.redo_stack else "disabled"))
@@ -263,7 +263,7 @@ class CourtFrame(tk.Frame):
 
     def save_session(self):
         if not self.history:
-            messagebox.showingo("Save", "Nothing to save.")
+            messagebox.showinfo("Save", "Nothing to save.")
             return
         path = fd.asksaveasfilename(
             title="Save Session (JSON)",
@@ -300,7 +300,7 @@ class CourtFrame(tk.Frame):
         out_path = fd.asksaveasfilename(
             title="Export Court Image",
             defaultextension = ".png",
-            filetypes=[("PNG Image", "*.png)")]
+            filetypes=[("PNG Image", "*.png")]
             )
         if not out_path:
             return
@@ -328,7 +328,7 @@ class CourtFrame(tk.Frame):
         path = fd.asksaveasfilename(
             title="Export JSON",
             defaultextension=".json",
-            filetypes=[("JSON files", "*json")],
+            filetypes=[("JSON files", "*.json")],
         )
         if not path:
             return
@@ -351,7 +351,7 @@ class CourtFrame(tk.Frame):
         
         fieldnames = ["x","y","player","team","quarter"]
         with open(path, "w", newline="",encoding="utf-8") as f:
-            writer = csv.DictWrtier(f, fieldnames=fieldnames)
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for evt in self.history:
                 writer.writerow({k: evt.get(k, "") for k in fieldnames})
