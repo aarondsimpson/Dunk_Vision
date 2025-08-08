@@ -175,7 +175,7 @@ class CourtFrame(tk.Frame):
     def select_player(self, button): 
         for b in self.player_buttons: 
             if b.winfo_exists():
-                b.config(bg=self.player_btn_selected_bg, relief="raised")
+                b.config(bg=self.player_btn_bg, relief="raised")
         #set selection
         self.selected_player_button = button 
         button.config(bg=self.player_btn_selected_bg, relief="sunken")
