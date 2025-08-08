@@ -11,7 +11,7 @@ class CourtCanvas(tk.Frame):
         super().__init__(master)
         
         self.court_type = court_type 
-        self.image_path - os.path.join("assets", f"{court_type}_court.jpeg")
+        self.image_path = os.path.join("assets", f"{court_type}_court.jpeg")
 
         self.project_root = os.path.dirname(os.path.abspath(__file__))
         self._load_court_image()
