@@ -1,4 +1,4 @@
-###Coordinates GUI window (size, title, layout)
+#Coordinates GUI window (size, title, layout)
 
 import tkinter as tk
 from tkinter import messagebox
@@ -10,7 +10,14 @@ class DunkVisionApp(tk.Tk):
         self.title("Dunk Vision")
         self.resizable(True,True)
 
-        self.protocol("WM_DELETE_WINDOW, self.on_app_close)")
+        #Global button styling for the whole app
+        self.option_add("*Button.Background","f0f0f0")
+        self.option_add("*Button.Foreground", "000000")
+        self.option_add("*Button.ActiveBackground","d9d9d9")
+        self.option_add("*Button.ActiveForeground", "000000")
+        
+        #Prepping for warning dialog box when app is closed 
+        self.protocol("WM_DELETE_WINDOW, self.on_app_close")
 
         court_type = self.prompt_user_for_court_type()
         self.build_ui(court_type)
