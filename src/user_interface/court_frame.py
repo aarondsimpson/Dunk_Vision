@@ -1,8 +1,8 @@
-### Holds and organizes the UI elements (top bar, side bar, export area) 
+# Holds and organizes the UI elements (top bar, side bar, export area) 
 
 import tkinter as tk 
 from tkinter import ttk, simpledialog, messagebox
-from src.user_interface.court_canvas import CourtCanvas ### CourtCanvas is now part of court_frame
+from src.user_interface.court_canvas import CourtCanvas # CourtCanvas is now part of court_frame
 from dialogs.player_dialogs import prompt_add_player, confirm_remove_player
 
 class CourtFrame(tk.Frame):
@@ -10,7 +10,7 @@ class CourtFrame(tk.Frame):
         super().__init__(master)
         self.court_type = court_type
 
-        #Layout grid of 3 columns (sidebar, canvas, and export) and 2 rows (top bar and content)
+        # Layout grid of 3 columns (sidebar, canvas, and export) and 2 rows (top bar and content)
         self.grid_rowconfigure(0, weight=0) # Top Bar 
         self.grid_rowconfigure(1, weight=1) # Main Content
         
@@ -18,43 +18,57 @@ class CourtFrame(tk.Frame):
         self.grid_columnconfigure(1, weight=1) #Court Canvas
         self.grid_columnconfigure(2, weight=0) #Export Panel
         self.grid_columnconfigure(2, weight=1) #Stretch Remainder
-
         
         #########################TOP-BAR#########################
         self.top_bar = tk.Frame(self, bg="#BF9F8F", height=50)
         self.top_bar.grid(row=0, column=0, columnspan=3, sticky="nsew")
         self.top_bar.grid_propagate(False) # Prevent shrinking if widgets are small
-
+        
+        #Provides room for middle section 
+        self.top_bar.grid_columnconfigure(0,weight=0) # Left cluster
+        self.top_bar.grid_columnconfigure(1,weight=1) # Center (Quarter Button) stretches
+        self.top_bar.grid_columnconfigure(2,weight=0) # Game cluster
+        self.top_bar.grid_columnconfigure(3,weight=0) # Export cluster 
+        
+        #Creates space for left section (undo/redo)
+        left = tk.Frame(self.top_bar, bg="#BF9F8F")
+        left.grid(row=0, column=0,padx=8,pady=6, sticky="w")
+        self.undo_button = tk.Button(left, text="Undo", state="disabled", command=self.undo_action, width=6)
+        self.undo_button.grid(row=0,column=1,padx=4)
+        self.redo_button = tk.Button(left, text="Redo", state="disabled", command=self.redo_action, width=6)
+        self.redo_button.grid(row=0,column=1,padx=4)
+        
+        #Creates space for center section (quarter buttons + end game)
+        center = tk.Frame(self.top_bar,bg="#BF9F8F")
+        center.grid(row=0, column=1,padx=8, pady=6, sticky="n")
+        center.grid_columnconfigure(0,weight=1)
+        tk.Label(center, text="Quarter").grid(row=0, column=0,columnspan=5,pady=(0,4))
+        
         #Adding GAME QUARTER buttons
-        for i, q in enumerate(["Q1","Q2","Q3","Q4"]):
-            btn = tk.Button(self.top_bar, text=q, width=6)
-            btn.grid(row=0, column=i, padx=2)
-      
+        quarters = ["Q1","Q2","Q3","Q4"]
+        for i, q in enumerate(quarters):
+            tk.Button(center, text=q,width=5,command=lambda v=q: self.on_quarter_change(v)).grid(row=1, column=i, padx=3)
+              
         #Adding END GAME button 
-        end_btn = tk.Button(self.top_bar,text="End Game", width=6)
-        end_btn.grid(row=0, column=4, padx=10)
-       
-        #Add SAVE Button 
-        save_btn = tk.Button(self.top_bar, text="Save", width=6)
-        save_btn.grid(row=0,column=5, padx=2)
-     
-        #Add RESET Button 
-        reset_btn = tk.Button(self.top_bar, text="Reset", width=6)
-        reset_btn.grid(row=0,column=6, padx=2)
-      
+        tk.Button(center, text="End Game", width=10,command=self.end_game).grid(row=1,column=4,padx=(10,0))
+               
+        #Add SAVE / RESET Button 
+        game = tk.Frame(self.top_bar,bg="#BF9F8F")
+        game.grid(row=0,column=2,padx=8,pady=6,sticky="e")
+        tk.Button(game, text="Reset", width=7, command=self.save_session).grid(row=1, column=0,padx=4, pady=(4,0))
+        
         #Add EXPORT Buttons
-        for i, export_type in enumerate(["Image", "JSON", "CSV"]):
-            export_btn = tk.Button(self.top_bar, text=export_type, width=6)
-            export_btn.grid(row=0, column=7+i, padx=2)
-       
-        #Add UNDO Buttons
-        self.undo_button = tk.Button(self.top_bar, text="Undo", state="disabled", command=self.undo_action)
-        self.undo_button.grid(row=0, column=0, padx=5, pady=5)
-      
-        #Add REDO Buttons
-        self.redo_button = tk.Button(self.top_bar, text="Redo", state="disabled", command=self.undo_action)
-        self.redo_button.grid(row=0, column=1, padx=5, pady=5) 
-       
+        export = tk.Frame(self.top_bar, bg="#BF9F8F")
+        export.grid(row=0,column=3,padx=8,pady=6,sticky="e")
+        for c in range(3):
+            export.grid_columnconfigure(c,weight=1, uniform="Export")
+        btn_img = tk.Button(export,text="Image", width=7, command=self.export_image)
+        btn_json = tk.Button(export,text="JSON", width=7, command=self.export_json)
+        btn_csv = tk.Button(export,text="CSV", width=7, command=self.export_csv)
+        btn_img.grid(row=0,column=0,padx=3)
+        btn_json.grid(row=0,column=1,padx=3)
+        btn_csv.grid(row=0,column=2,padx=3) 
+            
 
         #########################SIDE-BAR#########################
         self.sidebar = tk.Frame(self, bg="#BF9F8F", width=150)
