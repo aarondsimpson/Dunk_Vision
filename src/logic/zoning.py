@@ -7,7 +7,7 @@ ZoneName = Literal[
     "L Corner", "L Short Corner", "L Wing (2)", "L Wing (3)", "L Slot",
     "R Corner", "R Short Corner", "R Wing (2)", "R Wing (3)", "R Slot",
     "Key", "Nail", "L Low Post", "R Low Post", "L High Post", "R High Post",
-    "Top of Key", "R Arc (2)", "R Arc (3)", "Left Arc (2)", "Left Arc (3)", 
+    "Top of Key", "R Arc (2)", "R Arc (3)", "L Arc (2)", "L Arc (3)", 
     "Deep Three", "Center Zone" 
 ]
 
@@ -92,23 +92,23 @@ def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half"
     #corners and short corners
     if _in(nx, ny, c.L_CORNER): return "L Corner", 3
     if _in(nx, ny, c.R_CORNER): return "R Corner", 3
-    if _in(nx, ny, c.L_SHORT_CORNER): "L Short Corner", 3
-    if _in(nx, ny, c.R_SHORT_CORNER): return "R Short Corner", 3
+    if _in(nx, ny, c.L_SHORT_CORNER): return "L Short Corner", 2
+    if _in(nx, ny, c.R_SHORT_CORNER): return "R Short Corner", 2
 
     #explicit wings (no dynamic split - containment only)
     if _in(nx, ny, c.L_WING_3): return "L Wing (3)", 3
     if _in(nx, ny, c.L_WING_2): return "L Wing (2)", 2
     if _in(nx, ny, c.R_WING_3): return "R Wing (3)", 3
-    if _in(nx, ny, c.R_WING_2): return "L Wing (2)", 2
+    if _in(nx, ny, c.L_WING_2): return "L Wing (2)", 2
 
     #distance from hoop center for arc testing
-    dx, dy = nx = c.HOOP_X, ny - c.HOOP_Y
+    dx, dy = nx - c.HOOP_X, ny - c.HOOP_Y
     dist = math.hypot(dx,dy)
     if ny <= c.ARC_CUTOFF_Y and c.ARC_INNER <= dist <= c.ARC_OUTER:
         if nx <= c.HOOP_X:
-            return ("Left Arc (3)", 3) if dist >= c.ARC_RADIUS else ("Left Arc (2)", 2)
+            return ("L Arc (3)", 3) if dist >= c.ARC_RADIUS else ("L Arc (2)", 2)
         else: 
-            return ("Right Arc (3)", 3) if dist >= c.ARC_RADIUS else ("Right Arc (2)", 2)
+            return ("R Arc (3)", 3) if dist >= c.ARC_RADIUS else ("R Arc (2)", 2)
 
     #Top of Key 
     if _in(nx, ny, c.TOP_OF_KEY): return "Top of Key", 3
