@@ -12,20 +12,22 @@ class CourtCanvas(tk.Frame):
         super().__init__(master)
         self.court_type = court_type 
 
-        project_root = Path(__file__).resolve().parent.parent
-        assets_dir = project_root / "assets"
-        img_base = f"{self.court_type}_court"
+        ##DEBUG##
+        FILE_DIR = Path(__file__).resolve()
+        PROJECT_ROOT = FILE_DIR.parents[2]
+        ASSETS_DIR = PROJECT_ROOT / "assets"
 
-        for ext in ['png', 'jpg', 'jpeg']:
-            candidate = assets_dir / (img_base + ext)
+        img_base - f"{self.court_type}_court"
+        for ext in [".png", ".jpg", ".jpeg"]:
+            candidate = ASSETS_DIR / (img_base + ext)
             if candidate.exists():
                 self.image_path = candidate
                 break
-            else: 
-                raise FileNotFoundError(f"Could not find {img_base}.(jpg|png|jpeg) in {assets_dir}")
-            
-        print("Loading image from:", self.image_path)
-            
+        else:
+            print("DEBUG assets contents:", [o.name for p in ASSETS_DIR.glob("*")])
+            raise FileNotFoundError(
+                f"Could not find {img_base}.(jpeg|png|jpg) in {ASSETS_DIR}"
+            )
         
         self.canvas = tk.Canvas(self)
         self.canvas.grid(row=0,column=0, sticky="nsew")
