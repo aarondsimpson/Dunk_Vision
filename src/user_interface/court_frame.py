@@ -321,8 +321,21 @@ class CourtFrame(tk.Frame):
         messagebox.showinfo("Export Image", f"Image exported to:\n{out_path}")
 
 
-    def export_json(self): print("Export JSON (todo)")
-
+    def export_json(self): 
+        if not self.history:
+            messagebox.showinfo("Export JSON", "No events to export.")
+            return
+        path = fd.asksaveasfilename(
+            title="Export JSON",
+            defaultextension=".json",
+            filetypes=[("JSON files", "*json")],
+        )
+        if not path:
+            return
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(self.history, f, indent=2)
+        messagebox.showinfo("Export JSON", f"Events exported to:\n{path}")
+        
 
     def export_csv(self): print("Export CSV (todo)")
 
