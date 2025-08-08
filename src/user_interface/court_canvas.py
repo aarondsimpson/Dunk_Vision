@@ -2,7 +2,6 @@
 
 import tkinter as tk
 from PIL import Image, ImageTk 
-import os 
 from pathlib import Path
 
 #Creating a reusable class that sets up for full court/half court selection
@@ -12,28 +11,23 @@ class CourtCanvas(tk.Frame):
         super().__init__(master)
         self.court_type = court_type 
 
-        ##DEBUG##
-        FILE_DIR = Path(__file__).resolve()
-        PROJECT_ROOT = FILE_DIR.parents[2]
-        ASSETS_DIR = PROJECT_ROOT / "assets"
-
-        ##DEBUG PRINT##
-
-        print("DEBUG root:", PROJECT_ROOT)
-        print("DEBUG assets:", ASSETS_DIR)
-
+        assets_dir = self._find_assets_dir()
+        
         img_base = f"{self.court_type}_court"
-        for ext in [".png", ".jpg", ".jpeg"]:
-            candidate = ASSETS_DIR / (img_base + ext)
+        self.image_path = None
+        
+        for ext in (".png", ".jpg", ".jpeg"):
+            candidate = assets_dir / (img_base + ext)
             if candidate.exists():
                 self.image_path = candidate
                 break
-        else:
-            print("DEBUG assets contents:", [p.name for p in ASSETS_DIR.glob("*")])
-            raise FileNotFoundError(
-                f"Could not find {img_base}.(jpeg|png|jpg) in {ASSETS_DIR}"
-            )
-        
+            if not self.image_path:
+                available = ", ".join(p.name for p in assets_dir.glob("*"))
+                raise FileNotFoundError(
+                    f"Could not find {img_base}.(jpg|jpeg|png) in {assets_dir}. "
+                    f"Found: [{available}]"
+                )
+                    
         self.canvas = tk.Canvas(self)
         self.canvas.grid(row=0,column=0, sticky="nsew")
              
