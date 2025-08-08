@@ -261,7 +261,28 @@ class CourtFrame(tk.Frame):
             self.export_json()
             self.reset_session()
 
-    def save_session(self): print("Save Session (todo)")
+    def save_session(self):
+        if not self.history:
+            messagebox.showingo("Save", "Nothing to save.")
+            return
+        path = fd.asksaveasfilename(
+            title="Save Session (JSON)",
+            defaultextension=".json",
+            filetypes=[("JSON files", "*json")]
+        )  
+        if not path:
+            return
+        payload = {
+            "meta": {
+                "team_selected": self.selected_team.get(),
+                "court_type": self.court_type,
+            },
+            "events": self.history,
+        }
+        with open(path,"w",encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        messagebox.showinfo("Saved", f"Session saved to:\n{path}")
+
     def reset_session(self): print("Reset Session (todo)")
     def export_image(self): print("Export Image (todo)")
     def export_json(self): print("Export JSON (todo)")
