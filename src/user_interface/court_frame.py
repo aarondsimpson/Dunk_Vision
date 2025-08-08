@@ -368,7 +368,7 @@ class CourtFrame(tk.Frame):
         
         #normalize click to 0..1 based on canvas size
         width = self.canvas.canvas.winfo_width()
-        height = self.canvas.canvas.wifo_height()
+        height = self.canvas.canvas.winfo_height()
         nx, ny = x / width, y / height
 
         #determine zone + points 
