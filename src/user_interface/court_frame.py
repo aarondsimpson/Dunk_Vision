@@ -256,7 +256,11 @@ class CourtFrame(tk.Frame):
         print(f"Quarter -> {q}")
 
 
-    def end_game(self): print("End Game (todo)")
+    def end_game(self):
+        if messagebox.askyesno("End Game", "End the game and clear the current session?"):
+            self.export_json()
+            self.reset_session()
+
     def save_session(self): print("Save Session (todo)")
     def reset_session(self): print("Reset Session (todo)")
     def export_image(self): print("Export Image (todo)")
