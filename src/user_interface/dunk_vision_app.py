@@ -1,6 +1,7 @@
 ###Coordinates GUI window (size, title, layout)
 
 import tkinter as tk
+from tkinter import messagebox
 from src.user_interface.court_frame import CourtFrame
 
 class DunkVisionApp(tk.Tk):
@@ -9,9 +10,10 @@ class DunkVisionApp(tk.Tk):
         self.title("Dunk Vision")
         self.resizable(True,True)
 
+        self.protocol("WM_DELETE_WINDOW, self.on_app_close)")
+
         court_type = self.prompt_user_for_court_type()
         self.build_ui(court_type)
-
 
     def prompt_user_for_court_type(self):
         from tkinter import simpledialog
@@ -35,3 +37,9 @@ class DunkVisionApp(tk.Tk):
 
         self.court_frame = CourtFrame(self, court_type=court_type)
         self.court_frame.grid(row=0, column=0, sticky="nsew")
+
+    def on_app_close(self): 
+        if messagebox.askyesno("Quit", "Unsaved work will be lost. Quit?"):
+            self.destroy()
+
+
