@@ -2,8 +2,8 @@
 
 import tkinter as tk 
 from tkinter import ttk, simpledialog, messagebox
-from src.user_interface.court_canvas import CourtCanvas # CourtCanvas is now part of court_frame
-from dialogs.player_dialogs import prompt_add_player, confirm_remove_player
+from src.user_interface.court_canvas import CourtCanvas ### CourtCanvas is now part of court_frame
+from src.dialogs.player_dialogs import prompt_add_player, confirm_remove_player
 
 class CourtFrame(tk.Frame):
     def __init__(self, master, court_type):
