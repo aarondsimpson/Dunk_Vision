@@ -63,15 +63,16 @@ class CourtCanvas(tk.Frame):
         super().__init__(master)
         self.court_type = court_type
 
-    assets_dir = _find_assets_dir()
-    court = (self.court_type or "half").strip().lower()
-    img_name = "half_court.jpeg" if court == "half" else "full_court.jpeg"
+        assets_dir = self._find_assets_dir()
 
-    self.image_path = assets_dir / img_name
-    if not self.image_path.exists():
-        avaialble = ", ".join(p.name for p in assets_dir.glob("*"))
-        raise FileNotFoundError(f"Could not find {img_name} in {assets_dir}. Found: [{available}]")
-    
-    self.canvas = tk.Canvas(self)
-    self.canvas.grid(row=0, column=0, sticky="nsew")
-    self.load_and_display_image()
+        court = (self.court_type or "half").strip().lower()
+        img_name = "half_court.jpeg" if court == "half" else "full_court.jpeg"
+
+        self.image_path = assets_dir / img_name
+        if not self.image_path.exists():
+            available = ", ".join(p.name for p in assets_dir.glob("*"))
+            raise FileNotFoundError(f"Could not find {img_name} in {assets_dir}. Found: [{available}]")
+        
+        self.canvas = tk.Canvas(self)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.load_and_display_image()
