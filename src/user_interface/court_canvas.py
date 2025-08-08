@@ -3,6 +3,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk 
 import os 
+from pathlib import Path
 
 #Creating a reusable class that sets up for full court/half court selection
 class CourtCanvas(tk.Frame):
@@ -11,9 +12,9 @@ class CourtCanvas(tk.Frame):
         super().__init__(master)
         self.court_type = court_type 
 
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        project_root = os.path.join(project_root)
-        self.image_path = os.path.join(project_root, "assets", f"{court_type}_court.jpeg")
+        project_root = Path(__file__).resolve().parent.parent
+        assets_dir = project_root / "assets"
+        self.image_path = assets_dir / f"{court_type}_court.jpeg"
         
         self.canvas = tk.Canvas(self)
         self.canvas.grid(row=0,column=0, sticky="nsew")
