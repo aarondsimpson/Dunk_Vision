@@ -20,7 +20,7 @@ class DunkVisionApp(tk.Tk):
         court_type = simpledialog.askstring(
             title="Court Selection",
             prompt="Enter 'Half' or 'Full':",
-            parent=self
+            parent=self,
             initialvalue="half",
         )
         #If the user does not make a selection, half is the default selection
