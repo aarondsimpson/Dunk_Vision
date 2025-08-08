@@ -45,13 +45,13 @@ class CourtFrame(tk.Frame):
         self.top_bar.grid_columnconfigure(2,weight=0) # Game cluster
         self.top_bar.grid_columnconfigure(3,weight=0) # Export cluster 
         
-        #Creates space for left section (undo/redo)
+        #Creates space for left section (undo/redo)//Adding UNDO REDO 
         left = tk.Frame(self.top_bar, bg="#BF9F8F")
         left.grid(row=0, column=0,padx=8,pady=6, sticky="w")
         self.undo_button = tk.Button(left, text="Undo", state="disabled", command=self.undo_action, width=6)
         self.undo_button.grid(row=0,column=1,padx=4)
         self.redo_button = tk.Button(left, text="Redo", state="disabled", command=self.redo_action, width=6)
-        self.redo_button.grid(row=0,column=1,padx=4)
+        self.redo_button.grid(row=0,column=2,padx=4)
         
         #Creates space for center section (quarter buttons + end game)
         center = tk.Frame(self.top_bar,bg="#BF9F8F")
