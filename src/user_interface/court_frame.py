@@ -186,8 +186,25 @@ class CourtFrame(tk.Frame):
             self.refresh_player_list()
 
     #Placeholders for top bar buttons
-    def undo_action(self): print("Undo (todo)")
-    def redo_action(self): print("Redo (todo)")
+    def undo_action(self):
+        if not self.history: return
+        evt = self.history.pop()
+        self.redo_stack.append(evt)
+        #Crude add - remove last canvas item 
+        if self.canvas and self.canvas.find_all():
+            self.canvas.delete(self.canvas.find_all()[-1])
+
+    def redo_action(self):
+        if not self.redo_stack: return 
+        evt = self.redo_stack.pop()
+        self.history.append(evt)
+        #redraw dot
+        r =4
+        self.canvas.create_oval(evt["x"]-r, evt["y"]-r, evt["x"]+r, evt["y"]+r, fill="d9534f", outline="")
+
+
+
+
     def on_quarter_change(self,q): print(f"Quarter -> {q}")
     def end_game(self): print("End Game (todo)")
     def save_session(self): print("Save Session (todo)")
