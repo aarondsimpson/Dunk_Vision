@@ -104,32 +104,22 @@ def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half"
     #distance from hoop center for arc testing
     dx, dy = nx = c.HOOP_X, ny - c.HOOP_Y
     dist = math.hypot(dx,dy)
-    side = _side(nx, c.HOOP_X)
+    if ny <= c.ARC_CUTOFF_Y and c.ARC_INNER <= dist <= c.ARC_OUTER:
+        if nx <= c.HOOP_X:
+            return ("Left Arc (3)", 3) if dist >= c.ARC_RADIUS else ("Left Arc (2)", 2)
+        else: 
+            return ("Right Arc (3)", 3) if dist >= c.ARC_RADIUS else ("Right Arc (2)", 2)
 
-    #wings split
-   
+    #Top of Key 
+    if _in(nx, ny, c.TOP_OF_KEY): return "Top of Key", 3
 
-##ZONES
-# L_Corner : 3 Points 
-# L_Short_Corner : 2 Points
-# L_Low Post_Block : 2 Points
-# L_Wing (3) : 3 Points
-# L_Wing (2) : 2 Points
-# L_High_Post_Elbow
-# L_Slot : 3 Points
-# L_Arc_2 : 2 Points
-# L_Arc_3 : 3 Points
-# Nail : 2 Points
-# Key : 2 Points
-# Top_of_Key : 3 Points
-# Deep_Three : 3 Points
-# Center : 3 Points
-# R_Slot : 3 Points
-# R_Arc_2 : 2 Points
-# R_Arc_3 : 3 Points
-# R_High Post_Elbow
-# R_Wing(2) : 2 Points
-# R_Wing(3) : 3 Points
-# R_Low_Post_Block : 2 Points
-# R_Short_Corner : 2 Points
-# R_Corner : 3 Points
+    #Slots 
+    if _in(nx, ny, c.L_SLOT): return "L Slot", 3
+    if _in(nx, ny, c.R_SLOT): return "R Slot", 3
+
+    #Deep/Center
+    if _in(nx, ny, c.DEEP_THREE): return "Deep Three", 3
+    if _in(nx, ny, c.CENTER_ZONE): return "Center Zone", 3
+    
+    #Fallback
+    return "Top of Key", 3
