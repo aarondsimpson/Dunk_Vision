@@ -7,6 +7,7 @@ from tkinter import simpledialog, messagebox
 from PIL import Image, ImageDraw
 from src.user_interface.court_canvas import CourtCanvas ### CourtCanvas is now part of court_frame
 from src.dialogs.player_dialogs import prompt_add_player, confirm_remove_player
+from src.logic.zoning import get_zone
 
 class CourtFrame(tk.Frame):
     def __init__(self, master, court_type):
@@ -363,8 +364,24 @@ class CourtFrame(tk.Frame):
         player = self.selected_player_button["text"] if self.selected_player_button else None
         team = self.selected_team.get()
         quarter = self.current_quarter.get()
-        evt = {"x": x, "y":y, "player": player, "team": team, "quarter": quarter}
+        
+        #normalize click to 0..1 based on canvas size
+        width = self.canvas.canvas.winfo_width()
+        height = self.canvas.canvas.wifo_height()
+        nx, ny = x / width, y / height
+
+        #determine zone + points 
+        zone, points = get_zone(nx, ny, court_type=self.court_type)
+        
+        evt = {
+            "x": x, "y":y, 
+            "nx": nx, "ny": ny,
+            "player": player, 
+            "team": team, 
+            "quarter": quarter,
+            "points": points,
+            }
         self.history.append(evt)
         self.redo_stack.clear()
-        print("SHOT:",evt)
+        print(f"SHOT: {evt}")
     
