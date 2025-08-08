@@ -72,7 +72,7 @@ class CourtFrame(tk.Frame):
         #Add SAVE / RESET Button 
         game = tk.Frame(self.top_bar,bg="#BF9F8F")
         game.grid(row=0,column=2,padx=8,pady=6,sticky="e")
-        tk.Button(game, text="Reset", width=7, command=self.save_session).grid(row=1, column=0,padx=4, pady=(4,0))
+        tk.Button(game, text="Reset", width=7, command=self.reset_session).grid(row=1, column=0,padx=4, pady=(4,0))
         
         #Add EXPORT Buttons
         export = tk.Frame(self.top_bar, bg="#BF9F8F")
