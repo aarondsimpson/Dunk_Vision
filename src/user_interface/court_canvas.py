@@ -13,8 +13,9 @@ class CourtCanvas(tk.Frame):
         court = (court_type or "half").strip().lower()
         if court not in ("half", "full"):
             court = "half" 
-        self.court_type = court
         self.on_shot = on_shot
+        self.court_type = court
+        
 
         assets_dir = self._find_assets_dir()
         
