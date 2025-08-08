@@ -133,7 +133,7 @@ class CourtFrame(tk.Frame):
     
 
         #########################COURT-DISPLAY####################
-        self.canvas = CourtCanvas(self, court_type=self.court_type)
+        self.canvas = CourtCanvas(self, court_type=self.court_type, on_shot=self.record_shot)
         self.canvas.grid(row=1, column=1, sticky="nsew")
         
 
