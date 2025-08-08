@@ -11,6 +11,15 @@ ZoneName = Literal[
     "Deep Three", "Center Zone" 
 ]
 
+def _to_half_frame(nx: float, ny: float, court_type: str) -> tuple[float, float]:
+    """If court_type == 'full', fold the bottom half up and scale Y to 0,1. Left and right remains same."""
+    if (court_type or "half").lower().strip() != "full":
+        return nx, ny
+    if ny >= 0.5: 
+        ny = 1.0 - ny
+    ny = ny * 2.0
+    return nx, ny
+
 @dataclass(frozen=True)
 class Rect:
     x0: float; y0: float; x1: float; y1: float 
@@ -81,6 +90,7 @@ def _in(nx: float, ny: float, r: Rect) -> bool:
 def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half") -> Tuple[ZoneName, int]:
     #Maps noramlized click (nx,ny) -> zone_name, points_if_made).nx and ny are [0,1] relative to the displayed image
     c = _C
+    nx, ny = _to_half_frame(nx, ny, court_type)
     #posts, key, and nail 
     if _in(nx, ny, c.L_LOW_POST): return "L Low Post", 2 
     if _in(nx, ny, c.R_LOW_POST): return "R Low Post", 2
