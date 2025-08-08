@@ -283,7 +283,18 @@ class CourtFrame(tk.Frame):
             json.dump(payload, f, indent=2)
         messagebox.showinfo("Saved", f"Session saved to:\n{path}")
 
-    def reset_session(self): print("Reset Session (todo)")
+    def reset_session(self): 
+        self.history.clear()
+        self.redo_stack.clear()
+        inner_canvas = getattr(self.canvas, "canvas", None)
+        if inner_canvas is not None:
+            inner_canvas.delete("shot")
+        self.undo_button.config(state="disabled")
+        self.redo_button.config(state="disabled")
+
+
+
+
     def export_image(self): print("Export Image (todo)")
     def export_json(self): print("Export JSON (todo)")
     def export_csv(self): print("Export CSV (todo)")
