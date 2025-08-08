@@ -207,12 +207,20 @@ class CourtFrame(tk.Frame):
 
     #Placeholders for top bar buttons
     def undo_action(self):
-        if not self.history: return
+        if not self.history: 
+            return
         evt = self.history.pop()
         self.redo_stack.append(evt)
-        #Crude add - remove last canvas item 
-        if self.canvas and self.canvas.find_all():
-            self.canvas.delete(self.canvas.find_all()[-1])
+        
+        c = getattr(self.canvas, "canvas", None)
+        if c is not None:
+            items = c.find_all()
+            if items: 
+                c.delete(items[-1])
+
+        self.undo_button.cofig(state=("normal" if self.history else "disabled"))
+        self.redo_button.cofig(state=("normal" if self.redo_stack else "disabled"))
+       
 
     def redo_action(self):
         if not self.redo_stack: return 
