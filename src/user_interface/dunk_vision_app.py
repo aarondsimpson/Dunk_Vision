@@ -18,11 +18,11 @@ class DunkVisionApp(tk.Tk):
 
         #PLACEHOLDER: Prompts the user to select court size
         court_type = simpledialog.askstring(
-            "Select Court Type",
-            "Enter 'Half' or 'Full':",
+            title="Court Selection",
+            prompt="Enter 'Half' or 'Full':",
+            parent=self
             initialvalue="half",
         )
-
         #If the user does not make a selection, half is the default selection
         if court_type not in ("half", "full"):
             court_type = "half"
