@@ -28,7 +28,7 @@ class CourtFrame(tk.Frame):
         
         #Colors for player buttons
         self.player_btn_bg = "#e9e9e9"
-        self.player_btn_selected_bg = "#fffd966"
+        self.player_btn_selected_bg = "#ffd966"
         self.player_buttons = []
         self.selected_player_button = None
 
