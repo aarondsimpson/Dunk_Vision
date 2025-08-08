@@ -11,10 +11,10 @@ class DunkVisionApp(tk.Tk):
         self.resizable(True,True)
 
         #Global button styling for the whole app
-        self.option_add("*Button.Background","f0f0f0")
-        self.option_add("*Button.Foreground", "000000")
-        self.option_add("*Button.ActiveBackground","d9d9d9")
-        self.option_add("*Button.ActiveForeground", "000000")
+        self.option_add("*Button.Background","#f0f0f0")
+        self.option_add("*Button.Foreground", "#000000")
+        self.option_add("*Button.ActiveBackground","#d9d9d9")
+        self.option_add("*Button.ActiveForeground", "#000000")
         
         #Prepping for warning dialog box when app is closed 
         self.protocol("WM_DELETE_WINDOW", self.on_app_close)

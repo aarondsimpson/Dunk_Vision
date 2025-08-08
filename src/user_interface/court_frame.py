@@ -24,8 +24,8 @@ class CourtFrame(tk.Frame):
         self.grid_columnconfigure(2, weight=1) #Stretch Remainder
         
         #Colors for player buttons
-        self.player_btn_bg = "e9e9e9"
-        self.player_btn_selected_bg = "fffd966"
+        self.player_btn_bg = "#e9e9e9"
+        self.player_btn_selected_bg = "#fffd966"
         self.player_buttons = []
         self.selected_player_button = None
 
