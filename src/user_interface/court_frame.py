@@ -223,12 +223,24 @@ class CourtFrame(tk.Frame):
        
 
     def redo_action(self):
-        if not self.redo_stack: return 
+        if not self.redo_stack: 
+            return 
+        
         evt = self.redo_stack.pop()
         self.history.append(evt)
+        
         #redraw dot
-        r =4
-        self.canvas.create_oval(evt["x"]-r, evt["y"]-r, evt["x"]+r, evt["y"]+r, fill="d9534f", outline="")
+        c = getattr(self.canvas, "canvas", None)
+        if c is not None:
+            r =4
+            c.create_oval(
+                evt["x"]-r, evt["y"]-r, 
+                evt["x"]+r, evt["y"]+r, 
+                fill="d9534f", outline=""
+            )
+        self.undo_button.cofig(state=("normal" if self.history else "disabled"))
+        self.redo_button.cofig(state=("normal" if self.redo_stack else "disabled"))
+
 
     def on_quarter_change(self,q):
         self.current_quarter.set(q)
