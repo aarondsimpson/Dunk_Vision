@@ -6,7 +6,7 @@ from pathlib import Path
 
 #Creating a reusable class that sets up for full court/half court selection
 class CourtCanvas(tk.Frame):
-    #Define a function that calls the window
+    
     def __init__(self, master, court_type="half"):
         super().__init__(master)
         self.court_type = court_type 
@@ -31,7 +31,9 @@ class CourtCanvas(tk.Frame):
         self.canvas = tk.Canvas(self)
         self.canvas.grid(row=0,column=0, sticky="nsew")
              
-    
+        self.canvas.bind("<Button-1>", self.on_canvas_click)
+
+
         self.load_and_display_image()
 
 
@@ -59,6 +61,15 @@ class CourtCanvas(tk.Frame):
                 return candidate
         raise FileNotFoundError("Could not find 'assets' folder starting from {here}")
     
+    #Handler method for court clickability
+    def on_canvas_click(self, event):
+        #draw a tiny dot to check operational
+        r =4
+        self.canvas.create_oval(event.x-r, event.y-r, event.x+r, event.y+r, fill="d9534f", outline="")
+        #hand off to parent frame
+        if hasattr(self.master, "record_shot"):
+            self.master.record_shot(event.x, event.y)
+
     def __init__(self, master, court_type="half"):
         super().__init__(master)
         self.court_type = court_type

@@ -10,6 +10,10 @@ class CourtFrame(tk.Frame):
         super().__init__(master)
         self.court_type = court_type
 
+        #For court clickability handoff from court_canvas.py
+        self.history = []
+        self.redo_stack = []
+
         # Layout grid of 3 columns (sidebar, canvas, and export) and 2 rows (top bar and content)
         self.grid_rowconfigure(0, weight=0) # Top Bar 
         self.grid_rowconfigure(1, weight=1) # Main Content
@@ -19,6 +23,8 @@ class CourtFrame(tk.Frame):
         self.grid_columnconfigure(2, weight=0) #Export Panel
         self.grid_columnconfigure(2, weight=1) #Stretch Remainder
         
+
+
         #########################TOP-BAR#########################
         self.top_bar = tk.Frame(self, bg="#BF9F8F", height=50)
         self.top_bar.grid(row=0, column=0, columnspan=3, sticky="nsew")
@@ -70,6 +76,7 @@ class CourtFrame(tk.Frame):
         btn_csv.grid(row=0,column=2,padx=3) 
             
 
+
         #########################SIDE-BAR#########################
         self.sidebar = tk.Frame(self, bg="#BF9F8F", width=150)
         self.sidebar.grid(row=1, column=0, sticky="nsew")
@@ -116,10 +123,12 @@ class CourtFrame(tk.Frame):
         self.selected_team.trace_add("write", lambda *_: self.on_team_changes())
 
     
+
         #########################COURT-DISPLAY####################
         self.canvas = CourtCanvas(self, court_type=self.court_type)
         self.canvas.grid(row=1, column=1, sticky="nsew")
         
+
 
     #########################HELPER-FUNCTIONS####################     
     #when a different team (home/away) is selected, the current player deselects, the remove button becomes unclickable, and the team list refreshes 
@@ -141,7 +150,7 @@ class CourtFrame(tk.Frame):
             btn.bind("<Button-1>", lambda e, b=btn: self.select_player(b))
             self.player_buttons.append(btn)
 
-    #
+
     def select_player(self, button): 
         for b in self.player_buttons: 
             b.config(relief="raised")
@@ -154,7 +163,8 @@ class CourtFrame(tk.Frame):
         name = prompt_add_player(self)
         if name: 
             self.add_player(name.strip())
-    #
+    
+
     def add_player(self, name): 
         if not name: 
             return 
@@ -162,7 +172,7 @@ class CourtFrame(tk.Frame):
         roster.append(name)
         self.refresh_player_list() 
 
-    #
+
     def remove_selected_player(self):
         if not self.selected_player_button: 
             return
@@ -185,4 +195,13 @@ class CourtFrame(tk.Frame):
     def export_image(self): print("Export Image (todo)")
     def export_json(self): print("Export JSON (todo)")
     def export_csv(self): print("Export CSV (todo)")
+
+    def record_shot(self,x,y):
+        player = self.selected_player_button["text"] if self.selected_player_button else None
+        team = self.selected_team.get()
+        quarter = getattr(self, "Current Quarter", "Q1")
+        evt = {"x": x, "y":y, "player": player, "team": team, "quarter": quarter}
+        self.history.append(evt)
+        self.redo_stack.clear()
+        print("SHOT:",evt)
     
