@@ -32,8 +32,6 @@ class CourtFrame(tk.Frame):
         self.player_buttons = []
         self.selected_player_button = None
 
-        self.current_quarter = tk.StringVar(value="Q1")
-
         #########################TOP-BAR#########################
         self.top_bar = tk.Frame(self, bg="#BF9F8F", height=50)
         self.top_bar.grid(row=0, column=0, columnspan=3, sticky="nsew")
@@ -60,6 +58,9 @@ class CourtFrame(tk.Frame):
         tk.Label(center, text="Quarter").grid(row=0, column=0,columnspan=5,pady=(0,4))
         
         #Adding GAME QUARTER buttons
+        self.current_quarter = tk.StringVar(value="Q1")
+        self.quarter_buttons = {}
+
         quarters = ["Q1","Q2","Q3","Q4"]
         for i, q in enumerate(quarters):
             btn = tk.Button(center, text=q, width=5,command=lambda v=q: self.on_quarter_change(v))
