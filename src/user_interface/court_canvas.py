@@ -9,15 +9,15 @@ class CourtCanvas(tk.Frame):
     #Define a function that calls the window
     def __init__(self, master, court_type="half"):
         super().__init__(master)
-        
         self.court_type = court_type 
-        self.image_path = os.path.join("assets", f"{court_type}_court.jpeg")
 
-        self.project_root = os.path.dirname(os.path.abspath(__file__))
-        self._load_court_image()
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.image_path = os.path.join(project_root, "assets", f"{court_type}_court.jpeg")
 
         self.canvas = tk.Canvas(self)
-        self.canvas.grid(row=0,column=0)
+        self.canvas.grid(row=0,column=0, sticky="nsew")
+             
+    
         self.load_and_display_image()
 
 
