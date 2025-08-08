@@ -78,7 +78,7 @@ class CourtCanvas(tk.Frame):
     def on_canvas_click(self, event):
         #draw a tiny dot to check operational
         r =4
-        self.canvas.create_oval(event.x-r, event.y-r, event.x+r, event.y+r, fill="#d9534f", outline="")
+        self.canvas.create_oval(event.x-r, event.y-r, event.x+r, event.y+r, fill="#d9534f", outline="", tags=("shot",))
         #hand off to parent frame
         if callable(self.on_shot): 
             self.on_shot(event.x, event.y)

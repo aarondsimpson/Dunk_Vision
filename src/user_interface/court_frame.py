@@ -236,7 +236,8 @@ class CourtFrame(tk.Frame):
             c.create_oval(
                 evt["x"]-r, evt["y"]-r, 
                 evt["x"]+r, evt["y"]+r, 
-                fill="d9534f", outline=""
+                fill="d9534f", outline="",
+                tags=("shot",),
             )
         self.undo_button.cofig(state=("normal" if self.history else "disabled"))
         self.redo_button.cofig(state=("normal" if self.redo_stack else "disabled"))
@@ -258,6 +259,9 @@ class CourtFrame(tk.Frame):
     def export_image(self): print("Export Image (todo)")
     def export_json(self): print("Export JSON (todo)")
     def export_csv(self): print("Export CSV (todo)")
+
+
+
 
     def record_shot(self,x,y):
         player = self.selected_player_button["text"] if self.selected_player_button else None
