@@ -48,3 +48,19 @@ class CourtCanvas(tk.Frame):
 
         self.canvas.config(width=target_width, height=target_height)
         self.canvas.create_image(0,0, anchor="nw", image=self.photo_image)
+
+
+    def _find_assets_dir(self) -> Path:
+        here = Path(__file__).resolve()
+
+        for ancestor in (
+            here.parent,
+            here.parent.parent,
+            here.parent.parent.parent,
+            here.parents[3] if len(here.parents) > 3 else here.parent
+        ):
+        
+            candidate = ancestor / "assets"
+            if candidate.exists() and candidate.is_dir():
+                return candidate
+        raise FileNotFoundError("Could not find 'assets' folder starting from {here}")
