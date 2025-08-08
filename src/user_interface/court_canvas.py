@@ -17,14 +17,14 @@ class CourtCanvas(tk.Frame):
         PROJECT_ROOT = FILE_DIR.parents[2]
         ASSETS_DIR = PROJECT_ROOT / "assets"
 
-        img_base - f"{self.court_type}_court"
+        img_base = f"{self.court_type}_court"
         for ext in [".png", ".jpg", ".jpeg"]:
             candidate = ASSETS_DIR / (img_base + ext)
             if candidate.exists():
                 self.image_path = candidate
                 break
         else:
-            print("DEBUG assets contents:", [o.name for p in ASSETS_DIR.glob("*")])
+            print("DEBUG assets contents:", [p.name for p in ASSETS_DIR.glob("*")])
             raise FileNotFoundError(
                 f"Could not find {img_base}.(jpeg|png|jpg) in {ASSETS_DIR}"
             )
