@@ -292,11 +292,38 @@ class CourtFrame(tk.Frame):
         self.undo_button.config(state="disabled")
         self.redo_button.config(state="disabled")
 
+    def export_image(self): 
+        inner_canvas = getattr(self.canvas, "canvas", None)
+        if inner_canvas is None or not hasattr(self.canvas,"image_path"):
+            messagebox.showerror("Export Image", "Canvas Not Ready")
+            return
+        out_path = fd.asksaveasfilename(
+            title="Export Court Image",
+            defaultextension = ".png",
+            filetypes=[("PNG Image", "*.png)")]
+            )
+        if not out_path:
+            return
+    
+        base = Image.open(self.canvas.image_path).convert("RBGA")
+        width = inner_canvas.winfo_width()
+        height = inner_canvas.winfo_height()
+        if width and height: 
+            base = base.resize((width, height), Image.LANCZOS)
+
+        draw = ImageDraw.Draw(base)
+        r = 4
+        for evt in self.history:
+            x, y = evt["x"], evt ["y"]
+            draw.ellipse((x - r, y - r, x + r, y + r), fill="#d9534f", outline=None)
+
+        base.save(out_path, "PNG")
+        messagebox.showinfo("Export Image", f"Image exported to:\n{out_path}")
 
 
-
-    def export_image(self): print("Export Image (todo)")
     def export_json(self): print("Export JSON (todo)")
+
+
     def export_csv(self): print("Export CSV (todo)")
 
 
