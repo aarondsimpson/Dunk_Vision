@@ -50,8 +50,15 @@ class _C:
     L_SHORT_CORNER = Rect(0.00, Y_LOW,X_L_WING, Y_MID)
     R_SHORT_CORNER = Rect(X_R_WING, Y_LOW, 1.00, Y_MID)
 
-    L_WING = Rect(X_L_CORNER, Y_BASE, X_L_WING, Y_LOW)
-    R_WING = Rect(X_R_WING, Y_BASE, X_R_CORNER, Y_LOW)
+    _WRFAC = 0.70
+    L_WING_3 = Rect(X_L_CORNER, Y_BASE, 
+                    X_L_WING, Y_BASE + (Y_LOW - Y_BASE) * _WRFAC)
+    R_WING_3 = Rect(X_R_WING, Y_BASE, 
+                    X_R_CORNER, Y_BASE + (Y_LOW - Y_BASE) * _WRFAC)
+    L_WING_2 = Rect(X_L_CORNER, L_WING_3.y1,
+                    X_L_WING, Y_LOW)
+    R_WING_2 = Rect(X_R_WING, R_WING_3.y1, 
+                    X_R_CORNER, Y_LOW)
 
     L_SLOT = Rect(0.00, Y_TOPOFKEY, X_L_WING, Y_DEEP)
     R_SLOT = Rect(X_R_WING, Y_TOPOFKEY, 1.00, Y_DEEP)
@@ -71,9 +78,6 @@ class _C:
 def _in(nx: float, ny: float, r: Rect) -> bool:
     return r.contains(nx,ny)
 
-def _side(nx: float, hoop_x: float) -> Literal["L","R"]:
-    return "L" if nx <= hoop_x else "R"
-
 def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half") -> Tuple[ZoneName, int]:
     #Maps noramlized click (nx,ny) -> zone_name, points_if_made).nx and ny are [0,1] relative to the displayed image
     c = _C
@@ -90,6 +94,12 @@ def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half"
     if _in(nx, ny, c.R_CORNER): return "R Corner", 3
     if _in(nx, ny, c.L_SHORT_CORNER): "L Short Corner", 3
     if _in(nx, ny, c.R_SHORT_CORNER): return "R Short Corner", 3
+
+    #explicit wings (no dynamic split - containment only)
+    if _in(nx, ny, c.L_WING_3): return "L Wing (3)", 3
+    if _in(nx, ny, c.L_WING_2): return "L Wing (2)", 2
+    if _in(nx, ny, c.R_WING_3): return "R Wing (3)", 3
+    if _in(nx, ny, c.R_WING_2): return "L Wing (2)", 2
 
     #distance from hoop center for arc testing
     dx, dy = nx = c.HOOP_X, ny - c.HOOP_Y
