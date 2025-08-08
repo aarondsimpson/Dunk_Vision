@@ -337,9 +337,25 @@ class CourtFrame(tk.Frame):
         messagebox.showinfo("Export JSON", f"Events exported to:\n{path}")
         
 
-    def export_csv(self): print("Export CSV (todo)")
-
-
+    def export_csv(self): 
+        if not self.history:
+            messagebox.showinfo("Export CSV", "No events to export.")
+            return 
+        path = fd.asksaveasfilename(
+            title="Export CSV",
+            defaultextension=".csv",
+            filetypes=[("CSV Files", "*.csv")]
+        )
+        if not path:
+            return
+        
+        fieldnames = ["x","y","player","team","quarter"]
+        with open(path, "w", newline="",encoding="utf-8") as f:
+            writer = csv.DictWrtier(f, fieldnames=fieldnames)
+            writer.writeheader()
+            for evt in self.history:
+                writer.writerow({k: evt.get(k, "") for k in fieldnames})
+        messagebox.showinfo("Export CSV", f"CSV exported to:\n {path}")
 
 
     def record_shot(self,x,y):
