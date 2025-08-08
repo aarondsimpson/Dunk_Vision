@@ -221,8 +221,8 @@ class CourtFrame(tk.Frame):
             if items: 
                 c.delete(items[-1])
 
-        self.undo_button.cofig(state=("normal" if self.history else "disabled"))
-        self.redo_button.cofig(state=("normal" if self.redo_stack else "disabled"))
+        self.undo_button.config(state=("normal" if self.history else "disabled"))
+        self.redo_button.config(state=("normal" if self.redo_stack else "disabled"))
        
 
     def redo_action(self):
@@ -248,7 +248,7 @@ class CourtFrame(tk.Frame):
 
     def on_quarter_change(self,q):
         self.current_quarter.set(q)
-        for name, btn in self.quarter_buttons.item():
+        for name, btn in self.quarter_buttons.items():
             if name == q:
                 btn.config(relief="sunken")
             else: 
