@@ -29,6 +29,7 @@ class CourtFrame(tk.Frame):
         self.player_buttons = []
         self.selected_player_button = None
 
+        self.current_quarter = tk.StringVar(value="Q1")
 
         #########################TOP-BAR#########################
         self.top_bar = tk.Frame(self, bg="#BF9F8F", height=50)
@@ -58,7 +59,9 @@ class CourtFrame(tk.Frame):
         #Adding GAME QUARTER buttons
         quarters = ["Q1","Q2","Q3","Q4"]
         for i, q in enumerate(quarters):
-            tk.Button(center, text=q,width=5,command=lambda v=q: self.on_quarter_change(v)).grid(row=1, column=i, padx=3)
+            btn = tk.Button(center, text=q, width=5,command=lambda v=q: self.on_quarter_change(v))
+            btn.grid(row=1, column=i, padx=3)
+            self.quarter_buttons[q] = btn 
               
         #Adding END GAME button 
         tk.Button(center, text="End Game", width=10,command=self.end_game).grid(row=1,column=4,padx=(10,0))
@@ -219,7 +222,16 @@ class CourtFrame(tk.Frame):
         r =4
         self.canvas.create_oval(evt["x"]-r, evt["y"]-r, evt["x"]+r, evt["y"]+r, fill="d9534f", outline="")
 
-    def on_quarter_change(self,q): print(f"Quarter -> {q}")
+    def on_quarter_change(self,q):
+        self.current_quarter.set(q)
+        for name, btn in self.quarter_buttons.item():
+            if name == q:
+                btn.config(relief="sunken")
+            else: 
+                btn.config(relief="raised")
+        print(f"Quarter -> {q}")
+
+
     def end_game(self): print("End Game (todo)")
     def save_session(self): print("Save Session (todo)")
     def reset_session(self): print("Reset Session (todo)")
@@ -230,7 +242,7 @@ class CourtFrame(tk.Frame):
     def record_shot(self,x,y):
         player = self.selected_player_button["text"] if self.selected_player_button else None
         team = self.selected_team.get()
-        quarter = getattr(self, "Current Quarter", "Q1")
+        quarter = self.current_quarter.get()
         evt = {"x": x, "y":y, "player": player, "team": team, "quarter": quarter}
         self.history.append(evt)
         self.redo_stack.clear()
