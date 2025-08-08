@@ -174,3 +174,15 @@ class CourtFrame(tk.Frame):
             self.selected_player_button = None
             self.remove_button.config(state="disabled")
             self.refresh_player_list()
+
+    #Placeholders for top bar buttons
+    def undo_action(self): print("Undo (todo)")
+    def redo_action(self): print("Redo (todo)")
+    def on_quarter_change(self,q): print(f"Quarter -> {q}")
+    def end_game(self): print("End Game (todo)")
+    def save_session(self): print("Save Session (todo)")
+    def reset_session(self): print("Reset Session (todo)")
+    def export_image(self): print("Export Image (todo)")
+    def export_json(self): print("Export JSON (todo)")
+    def export_csv(self): print("Export CSV (todo)")
+    
