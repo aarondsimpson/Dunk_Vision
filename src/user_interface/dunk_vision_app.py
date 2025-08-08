@@ -17,7 +17,7 @@ class DunkVisionApp(tk.Tk):
         self.option_add("*Button.ActiveForeground", "000000")
         
         #Prepping for warning dialog box when app is closed 
-        self.protocol("WM_DELETE_WINDOW, self.on_app_close")
+        self.protocol("WM_DELETE_WINDOW", self.on_app_close)
 
         court_type = self.prompt_user_for_court_type()
         self.build_ui(court_type)
