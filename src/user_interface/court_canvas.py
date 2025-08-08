@@ -70,20 +70,4 @@ class CourtCanvas(tk.Frame):
         if hasattr(self.master, "record_shot"):
             self.master.record_shot(event.x, event.y)
 
-    def __init__(self, master, court_type="half"):
-        super().__init__(master)
-        self.court_type = court_type
-
-        assets_dir = self._find_assets_dir()
-
-        court = (self.court_type or "half").strip().lower()
-        img_name = "half_court.jpg" if court == "half" else "full_court.jpg"
-
-        self.image_path = assets_dir / img_name
-        if not self.image_path.exists():
-            available = ", ".join(p.name for p in assets_dir.glob("*"))
-            raise FileNotFoundError(f"Could not find {img_name} in {assets_dir}. Found: [{available}]")
-        
-        self.canvas = tk.Canvas(self)
-        self.canvas.grid(row=0, column=0, sticky="nsew")
-        self.load_and_display_image()
+    
