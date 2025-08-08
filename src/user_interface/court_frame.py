@@ -121,7 +121,7 @@ class CourtFrame(tk.Frame):
         self.canvas.grid(row=1, column=1, sticky="nsew")
         
 
-        #########################HELPER-FUNCTIONS####################     
+    #########################HELPER-FUNCTIONS####################     
     #when a different team (home/away) is selected, the current player deselects, the remove button becomes unclickable, and the team list refreshes 
     def on_team_change(self): 
         self.selected_player_button = None
