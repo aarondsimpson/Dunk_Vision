@@ -160,3 +160,24 @@ class CourtFrame(tk.Frame):
             self.selected_player_button = None
             self.remove_button.config(state="disabled")
             self.refresh_player_list()
+
+    def undo_action(self):
+        self.undo_action = tk.Button(self.top_bar, text="Undo", command=self.undo_action)
+        self.undo_action = tk.Button(self.top_bar, text="Redo", command=self.redo_action)
+        self.undo_action = tk.Button(self.top_bar, text="Save", command=self.save_session)
+        self.curret_quarter = tk.StringVar(value="Q1")
+        quarter_menu = ttk.OptionMenu(self.top_bar, self.curret_quarter, "Q1", "Q1", "Q2", "Q3", "Q4", command=self.on_quarter_change)
+
+    def save_session(self):
+        print("Session saved!")
+
+    def on_quarter_change(self, choice):
+        print(f"Quarter changed to {choice}")
+
+    def redo_action(self):
+        print("Redo action performed!")
+
+    def undo_action(self):
+        print("Undo action performed!")
+
+        
