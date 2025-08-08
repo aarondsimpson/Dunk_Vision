@@ -17,6 +17,11 @@ class CourtCanvas(tk.Frame):
         PROJECT_ROOT = FILE_DIR.parents[2]
         ASSETS_DIR = PROJECT_ROOT / "assets"
 
+        ##DEBUG PRINT##
+
+        print("DEBUG root:", PROJECT_ROOT)
+        print("DEBUG assets:", ASSETS_DIR)
+
         img_base = f"{self.court_type}_court"
         for ext in [".png", ".jpg", ".jpeg"]:
             candidate = ASSETS_DIR / (img_base + ext)
