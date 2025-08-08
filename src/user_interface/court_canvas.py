@@ -12,8 +12,9 @@ class CourtCanvas(tk.Frame):
         self.court_type = court_type 
 
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        project_root = os.path.join(project_root)
         self.image_path = os.path.join(project_root, "assets", f"{court_type}_court.jpeg")
-
+        
         self.canvas = tk.Canvas(self)
         self.canvas.grid(row=0,column=0, sticky="nsew")
              
