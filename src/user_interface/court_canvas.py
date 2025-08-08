@@ -8,7 +8,7 @@ from pathlib import Path
 #Creating a reusable class that sets up for full court/half court selection
 class CourtCanvas(tk.Frame):
     
-    def __init__(self, master, court_type="half"):
+    def __init__(self, master, court_type="half", on_shot=None):
         super().__init__(master)
         court = (court_type or "half").strip().lower()
         if court not in ("half", "full"):
@@ -69,10 +69,10 @@ class CourtCanvas(tk.Frame):
             if cwd_candidate.exists() and cwd_candidate.is_dir():
                 return cwd_candidate
             
-            raise FileNotFoundError(
-                f"Could not find an 'assets' folder from {here} or CWD {Path.cwd()}./n"
-                "Set DUNK_ASSETS or create an 'assets' directory."
-            )
+        raise FileNotFoundError(
+            f"Could not find an 'assets' folder from {here} or CWD {Path.cwd()}./n"
+            "Set DUNK_ASSETS or create an 'assets' directory."
+        )
     
     #Handler method for court clickability
     def on_canvas_click(self, event):
@@ -80,7 +80,7 @@ class CourtCanvas(tk.Frame):
         r =4
         self.canvas.create_oval(event.x-r, event.y-r, event.x+r, event.y+r, fill="#d9534f", outline="")
         #hand off to parent frame
-        if self.on_shot: 
+        if callable(self.on_shot): 
             self.on_shot(event.x, event.y)
 
     
