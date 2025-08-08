@@ -125,7 +125,7 @@ class CourtFrame(tk.Frame):
 
         #Populate initial list and team switch 
         self.refresh_player_list()
-        self.selected_team.trace_add("write", lambda *_: self.on_team_changes())
+        self.selected_team.trace_add("write", lambda *_: self.on_team_change())
 
     
 
