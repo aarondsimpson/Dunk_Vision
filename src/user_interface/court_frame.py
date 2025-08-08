@@ -23,6 +23,11 @@ class CourtFrame(tk.Frame):
         self.grid_columnconfigure(2, weight=0) #Export Panel
         self.grid_columnconfigure(2, weight=1) #Stretch Remainder
         
+        #Colors for player buttons
+        self.player_btn_bg = "e9e9e9"
+        self.player_btn_selected_bg = "fffd966"
+        self.player_buttons = []
+        self.selected_player_button = None
 
 
         #########################TOP-BAR#########################
@@ -145,18 +150,30 @@ class CourtFrame(tk.Frame):
 
         roster = self.rosters[self.selected_team.get()]
         for idx, name in enumerate(roster):
-            btn = tk.Button(self.player_list_frame, text=name, anchor="w")
+            btn = tk.Button(
+                self.player_list_frame,
+                text=name,
+                bg=self.player_btn_bg,
+                relief="raised",
+                command=lambda b=btn: self.select_player(b)
+            )
             btn.grid(row=idx, column=0, sticky="ew", pady=2)
-            btn.bind("<Button-1>", lambda e, b=btn: self.select_player(b))
             self.player_buttons.append(btn)
+
+        if not (self.selected_player_button and self.selected_player_button.winfo_exists()):
+            self.selected_player_button=None 
+            self.remove_button.config(state="disabled")
 
 
     def select_player(self, button): 
         for b in self.player_buttons: 
-            b.config(relief="raised")
-        button.config(relief="sunken")
-        self.selected_player_button = button
-        self.remove_button.config(state="normal")
+            if b.winfo_exists():
+                b.config(bg=self.player_btn_selected_bg, relief="raised")
+        #set selection
+        self.selected_player_button = button 
+        button.config(bg=self.player_btn_selected_bg, relief="sunken")
+        #allow removal
+        self.remove_button.config(state="normal")      
 
 
     def add_player_dialog(self):
@@ -201,9 +218,6 @@ class CourtFrame(tk.Frame):
         #redraw dot
         r =4
         self.canvas.create_oval(evt["x"]-r, evt["y"]-r, evt["x"]+r, evt["y"]+r, fill="d9534f", outline="")
-
-
-
 
     def on_quarter_change(self,q): print(f"Quarter -> {q}")
     def end_game(self): print("End Game (todo)")
