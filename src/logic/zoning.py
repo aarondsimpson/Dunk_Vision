@@ -68,19 +68,34 @@ class _C:
     L_HIGH_POST = Rect(0.36, Y_MID, 0.40, Y_TOPOFKEY)
     R_HIGH_POST = Rect(0.60, Y_MID, 0.64, Y_TOPOFKEY)
 
+def _in(nx: float, ny: float, r: Rect) -> bool:
+    return r.contains(nx,ny)
 
-
+def _side(nx: float, hoop_x: float) -> Literal["L","R"]:
+    return "L" if nx <= hoop_x else "R"
 
 def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half") -> Tuple[ZoneName, int]:
     #Maps noramlized click (nx,ny) -> zone_name, points_if_made).
     #nx and ny are [0,1] relative to the displayed image
     c = _C
+    #posts, key, and nail 
+    if _in(nx, ny, c.L_LOW_POST): return "L Low Post", 2 
+    if _in(nx, ny, c.R_LOW_POST): return "R Low Post", 2
+    if _in(nx, ny, c.L_HIGH_POST): return "L High Post", 2
+    if _in(nx, ny, c.R_HIGH_POST): return "R High Post", 2
+    if _in(nx, ny, c.KEY_RECTANGLE): return "Key", 2
+    if _in(nx, ny, c.NAIL_RECTANGLE): return "Nail", 2
+    #corners and short corners
+    if _in(nx, ny, c.L_CORNER): return "L Corner", 3
+    if _in(nx, ny, c.R_CORNER): return "R Corner", 3
+    if _in(nx, ny, c.L_SHORT_CORNER): "L Short Corner", 3
+    if _in(nx, ny, c.R_SHORT_CORNER): return "R Short Corner", 3
+
     #distance from hhop center for arc testing
     dx, dy = nx = c.HOOP_X, ny - c.HOOP_Y
     dist = math.hypot(dx,dy)
 
-    #posts, key, and nail 
-
+   
 
 ##ZONES
 # L_Corner : 3 Points 
