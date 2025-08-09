@@ -46,7 +46,7 @@ class DunkVisionApp(tk.Tk):
             choice.set(val)
             dlg.destroy()
         
-        row = tk.Frame(dlg); row.pack(pady=8)
+        btn_row = tk.Frame(dlg); btn_row.pack(pady=8)
         tk.Button(btn_row, text="Half Court", font=("Arial", 14), width=14,
                   command=lambda: pick("Half")).grid(row=0, column=0, padx=10)
         tk.Button(btn_row, text="Full Court", font=("Arial", 14), width=14,
