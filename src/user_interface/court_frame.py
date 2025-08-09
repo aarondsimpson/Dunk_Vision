@@ -7,7 +7,7 @@ from tkinter import simpledialog, messagebox
 from PIL import Image, ImageDraw
 from src.user_interface.court_canvas import CourtCanvas ### CourtCanvas is now part of court_frame
 from src.dialogs.player_dialogs import prompt_add_player, confirm_remove_player
-from src.logic.zoning import get_zone
+from src.logic.zoning import get_zone, distance_from_hoop
 
 class CourtFrame(tk.Frame):
     def __init__(self, master, court_type):
@@ -362,27 +362,34 @@ class CourtFrame(tk.Frame):
 
 
     def record_shot(self,x,y):
-        player = self.selected_player_button["text"] if self.selected_player_button else None
-        team = self.selected_team.get()
-        quarter = self.current_quarter.get()
-        
-        #normalize click to 0..1 based on canvas size
-        width = self.canvas.canvas.winfo_width()
-        height = self.canvas.canvas.winfo_height()
-        nx, ny = x / width, y / height
+       inner_canvas = getattr(self.canvas, "canvas", None)
+       if inner_canvas is None:
+            return
+       
+       width, height = inner_canvas.winfo_width(), inner_canvas.winfo_height()
+       nx, ny = x / width, y / height
 
-        #determine zone + points 
-        zone, points = get_zone(nx, ny, court_type=self.court_type)
-        
-        evt = {
-            "x": x, "y":y, 
-            "nx": nx, "ny": ny,
-            "player": player, 
-            "team": team, 
-            "quarter": quarter,
-            "points": points,
-            }
-        self.history.append(evt)
-        self.redo_stack.clear()
-        print(f"SHOT: {evt}")
+       zone, points = get_zone(nx, ny, court_type=self.court_type)
+       dist_norm, dist_feet = distance_from_hoop(nx, ny, court_type=self.court_type)
+       
+       player = self.selected_player_button["text"] if self.selected_player_button else None
+       team = self.selected_team.get()
+       quarter = self.current_quarter.get()
+      
+       evt = {
+           "x": x, "y":y, 
+           "nx": nx, "ny": ny,
+           "zone": zone,
+           "dist_norm": dist_norm,
+           "dist_feet": round(dist_feet, 2),
+           "player": player, 
+           "team": team, 
+           "quarter": quarter,
+           "points": points,
+           }
+       self.history.append(evt)
+       self.redo_stack.clear()
+       self.undo_button.config(state="normal")
+       self.redo_button.config(state="disabled")
+       print(f"SHOT: {evt}")
     
