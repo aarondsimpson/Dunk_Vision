@@ -32,8 +32,8 @@ class DunkVisionApp(tk.Tk):
       
         width, height = 420, 220
         self.update_idletasks()  # Ensure geometry is updated
-        x = (self.winfo_rootx) + (self.winfo_width() - width) // 2
-        y = (self.winfo_rooty) + (self.winfo_height() - height) // 2
+        x = self.winfo_rootx() + (self.winfo_width() - width) // 2
+        y = self.winfo_rooty() + (self.winfo_height() - height) // 2
         dlg.geometry(f"{width}x{height}+{max(0,x)}+{max(0,y)}")
 
         dlg.grab_set()
