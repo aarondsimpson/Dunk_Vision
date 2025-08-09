@@ -242,7 +242,7 @@ class CourtFrame(tk.Frame):
             c.create_oval(
                 evt["x"]-r, evt["y"]-r, 
                 evt["x"]+r, evt["y"]+r, 
-                fill="d9534f", outline="",
+                fill="#d9534f", outline="",
                 tags=("shot"),
             )
         self.undo_button.cofig(state=("normal" if self.history else "disabled"))
