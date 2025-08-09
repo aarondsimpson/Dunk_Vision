@@ -9,6 +9,10 @@ class DunkVisionApp(tk.Tk):
         super().__init__()
         self.title("Dunk Vision")
         self.resizable(True,True)
+        #Prepping for warning dialog box when app is closed 
+        self.protocol("WM_DELETE_WINDOW", self.on_app_close)
+        self.withdraw()
+        self.after(0, self._choose_and_build)
 
         #Global button styling for the whole app
         self.option_add("*Button.Background","#f0f0f0")
@@ -16,19 +20,17 @@ class DunkVisionApp(tk.Tk):
         self.option_add("*Button.ActiveBackground","#d9d9d9")
         self.option_add("*Button.ActiveForeground", "#000000")
         
-        #Prepping for warning dialog box when app is closed 
-        self.protocol("WM_DELETE_WINDOW", self.on_app_close)
-
+    def _choose_and_build(self):
         court_type = self.prompt_user_for_court_type()
         self.build_ui(court_type)
+        self.deiconify()
 
     def prompt_user_for_court_type(self) -> str:
-        self.withdraw()
-
         dlg = tk.Toplevel(self)
         dlg.title("Court Selection")
         dlg.resizable(False, False)
         dlg.transient(self)
+        dlg.grab_set()
       
         width, height = 420, 220
         self.update_idletasks()  # Ensure geometry is updated
@@ -36,19 +38,15 @@ class DunkVisionApp(tk.Tk):
         y = self.winfo_rooty() + (self.winfo_height() - height) // 2
         dlg.geometry(f"{width}x{height}+{max(0,x)}+{max(0,y)}")
 
-        dlg.grab_set()
-        dlg.attributes("-topmost", True)
-        dlg.after(200, lambda: dlg.attributes("-topmost", False))
-
         tk.Label(dlg, text="Select Court Type:", font=("Arial", 18, "bold")).pack(pady=(20, 12))
-        choice = {"value": "Half"}  # 
-       
+        
+        choice = {"value": "Half"}
+         # 
         def pick(val: str):
             choice.set(val)
             dlg.destroy()
         
-        btn_row = tk.Frame(dlg)
-        btn_row.pack(pady=8)
+        row = tk.Frame(dlg); row.pack(pady=8)
         tk.Button(btn_row, text="Half Court", font=("Arial", 14), width=14,
                   command=lambda: pick("Half")).grid(row=0, column=0, padx=10)
         tk.Button(btn_row, text="Full Court", font=("Arial", 14), width=14,
@@ -61,9 +59,10 @@ class DunkVisionApp(tk.Tk):
 
 
         dlg.wait_window(dlg)
-
-        self.deiconify()  # Show the main window again
         return choice["value"]
+    
+    def on_app_close(self):
+        self.destroy()
        
 
     def build_ui(self,court_type):
