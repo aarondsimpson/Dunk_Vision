@@ -1,7 +1,7 @@
 #Coordinates GUI window (size, title, layout)
 
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 from src.user_interface.court_frame import CourtFrame
 
 class DunkVisionApp(tk.Tk):
@@ -23,19 +23,43 @@ class DunkVisionApp(tk.Tk):
         self.build_ui(court_type)
 
     def prompt_user_for_court_type(self):
-        from tkinter import simpledialog
+        dlg = tk.Toplevel(self)
+        dlg.title("Court Selection")
+        dlg.resizable(False, False)
+        dlg.transient(self)
+        dlg.grab_set()
+        dlg.attributes("-topmost", True)
+        dlg.after(200, lambda: dlg.attributes("-topmost", False))
+        
+        width, height = 420, 220
+        self.update_idletasks()  # Ensure geometry is updated
+        x = (self.winfo_rootx) + (self.winfo_width() - width) // 2
+        y = (self.winfo_rooty) + (self.winfo_height() - height) // 2
+        dlg.geometry(f"{width}x{height}+{max(0,x)}+{max(0,y)}")
 
-        #PLACEHOLDER: Prompts the user to select court size
-        court_type = simpledialog.askstring(
-            title="Court Selection",
-            prompt="Enter 'Half' or 'Full':",
-            parent=self,
-            initialvalue="half",
-        )
-        #If the user does not make a selection, half is the default selection
-        if court_type not in ("half", "full"):
-            court_type = "half"
-        return court_type
+        tk.Label(dlg, text="Select Court Type:", font=("Arial", 18, "bold")).pack(pady=(20, 12))
+
+        choice = tk.StringVar(value="Half")
+
+        btn_row = tk.Frame(dlg)
+        btn_row.pack(pady=8)
+
+        def pick(val: str):
+            choice.set(val)
+            dlg.destroy()
+
+        tk.Button(btn_row, text="Half Court", font=("Arial", 14), width=14,
+                  command=lambda: pick("Half")).grid(row=0, column=0, padx=10)
+        tk.Button(btn_row, text="Full Court", font=("Arial", 14), width=14,
+                  command=lambda: pick("Full")).grid(row=0, column=1, padx=10)
+        
+        dlg.bind("<Escape>", lambda e: pick("Half"))  # Default to Half Court on Escape
+        dlg.bind("<Return>", lambda e: pick(choice.get()))
+
+        dlg.focus_force()
+        dlg.wait_window()
+        return choice.get()
+       
 
     def build_ui(self,court_type):
         #placeholder layout
