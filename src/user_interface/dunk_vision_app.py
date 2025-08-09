@@ -1,6 +1,7 @@
 #Coordinates GUI window (size, title, layout)
 
 import tkinter as tk
+import traceback
 from tkinter import messagebox, simpledialog
 from src.user_interface.court_frame import CourtFrame
 
@@ -21,9 +22,24 @@ class DunkVisionApp(tk.Tk):
         self.after(0, self._choose_and_build)
 
     def _choose_and_build(self):
-        court_type = self.prompt_user_for_court_type()
-        self.build_ui(court_type)
-        self.deiconify()
+        try: 
+            court_type = self.prompt_user_for_court_type()
+            print(f"[DV] court_type -> {court_type}")
+            self.build_ui(court_type)
+            print(f"[DV] build_ui done, now showing window")
+        except Exception as e:
+           tb = traceback.format_exc()
+           print(tb)
+           messagebox.showerror("Startup Error", tb)
+        finally:
+            self.deiconify()
+            self.update_idletasks()
+            self.lift()
+            try:
+                self.attributes("-topmost", True)
+                self.after(200, lambda: self.attributes("-topmost", False))
+            except Exception:
+                pass
 
     def prompt_user_for_court_type(self) -> str:
         dlg = tk.Toplevel(self)
@@ -40,7 +56,7 @@ class DunkVisionApp(tk.Tk):
 
         tk.Label(dlg, text="Select Court Type:", font=("Arial", 18, "bold")).pack(pady=(20, 12))
         
-        choice = {"value": "Half"}
+        choice = tk.StringVar(value="Half")  # Default to Half Court
         
         def pick(val: str):
             choice.set(val)
