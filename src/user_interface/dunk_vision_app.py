@@ -24,16 +24,18 @@ class DunkVisionApp(tk.Tk):
     def _choose_and_build(self):
         try: 
             court_type = self.prompt_user_for_court_type()
+            court_type = (court_type or "half").strip().lower()
             print(f"[DV] court_type -> {court_type}")
             self.build_ui(court_type)
             print(f"[DV] build_ui done, now showing window")
-        except Exception as e:
+        except Exception:
            tb = traceback.format_exc()
            print(tb)
            messagebox.showerror("Startup Error", tb)
         finally:
             self.deiconify()
             self.update_idletasks()
+            self.state("normal")
             self.lift()
             try:
                 self.attributes("-topmost", True)
@@ -49,10 +51,10 @@ class DunkVisionApp(tk.Tk):
         dlg.grab_set()
       
         width, height = 420, 220
-        self.update_idletasks()  # Ensure geometry is updated
-        x = self.winfo_rootx() + (self.winfo_width() - width) // 2
-        y = self.winfo_rooty() + (self.winfo_height() - height) // 2
-        dlg.geometry(f"{width}x{height}+{max(0,x)}+{max(0,y)}")
+        dlg.update_idletasks()  # Ensure geometry is updated
+        screen_x = (dlg.winfo_screenwidth() - width) // 2
+        screen_y = (dlg.winfo_screenheight() - height) // 2
+        dlg.geometry(f"{width}x{height}+{screen_x}+{max(0,screen_y)}")
 
         tk.Label(dlg, text="Select Court Type:", font=("Arial", 18, "bold")).pack(pady=(20, 12))
         
