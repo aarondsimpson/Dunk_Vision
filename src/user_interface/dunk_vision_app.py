@@ -63,7 +63,7 @@ class DunkVisionApp(tk.Tk):
     def build_ui(self,court_type):
         #placeholder layout
         self.grid_rowconfigure(0,weight=1)
-        self.grid_columnconfigure(0,weight=1
+        self.grid_columnconfigure(0,weight=1)
         self.court_frame = CourtFrame(self, court_type=court_type)
         self.court_frame.grid(row=0, column=0, sticky="nsew")
 
