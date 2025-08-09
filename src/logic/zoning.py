@@ -11,6 +11,8 @@ ZoneName = Literal[
     "Deep Three", "Center Zone" 
 ]
 
+THREE_POINT_RADIUS_FT = 23.75
+
 def _to_half_frame(nx: float, ny: float, court_type: str) -> tuple[float, float]:
     """If court_type == 'full', fold the bottom half up and scale Y to 0,1. Left and right remains same."""
     if (court_type or "half").lower().strip() != "full":
@@ -133,3 +135,15 @@ def get_zone(nx: float, ny: float, *, court_type: Literal["half", "full"]="half"
     
     #Fallback
     return "Top of Key", 3
+
+def distance_from_hoop(nx: float, ny: float, *, court_type: Literal["half", "full"]="half") -> float:
+    """Returns the distance from the hoop center in feet."""
+    nx, ny = _to_half_frame(nx, ny, court_type)
+    c = _C
+    dx = nx - c.HOOP_X
+    dy = ny - c.HOOP_Y
+    dist_norm = math.hypot(dx, dy)
+
+    feet_per_norm = THREE_POINT_RADIUS_FT / c.ARC_RADIUS
+    dist_feet = dist_norm * feet_per_norm
+    return dist_norm, dist_feet
