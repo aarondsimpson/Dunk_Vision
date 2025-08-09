@@ -60,8 +60,7 @@ class DunkVisionApp(tk.Tk):
         dlg.wait_window(dlg)
         return choice["value"]
 
-    def build_ui(self,court_type):
-        #placeholder layout
+    def build_ui(self,court_type: str):
         self.grid_rowconfigure(0,weight=1)
         self.grid_columnconfigure(0,weight=1)
         self.court_frame = CourtFrame(self, court_type=court_type)
