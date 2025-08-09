@@ -9,17 +9,17 @@ class DunkVisionApp(tk.Tk):
         super().__init__()
         self.title("Dunk Vision")
         self.resizable(True,True)
-        #Prepping for warning dialog box when app is closed 
         self.protocol("WM_DELETE_WINDOW", self.on_app_close)
-        self.withdraw()
-        self.after(0, self._choose_and_build)
 
         #Global button styling for the whole app
         self.option_add("*Button.Background","#f0f0f0")
         self.option_add("*Button.Foreground", "#000000")
         self.option_add("*Button.ActiveBackground","#d9d9d9")
         self.option_add("*Button.ActiveForeground", "#000000")
-        
+       
+        self.withdraw()
+        self.after(0, self._choose_and_build)
+
     def _choose_and_build(self):
         court_type = self.prompt_user_for_court_type()
         self.build_ui(court_type)
@@ -41,15 +41,15 @@ class DunkVisionApp(tk.Tk):
         tk.Label(dlg, text="Select Court Type:", font=("Arial", 18, "bold")).pack(pady=(20, 12))
         
         choice = {"value": "Half"}
-         # 
+        
         def pick(val: str):
             choice.set(val)
             dlg.destroy()
         
-        btn_row = tk.Frame(dlg); btn_row.pack(pady=8)
-        tk.Button(btn_row, text="Half Court", font=("Arial", 14), width=14,
+        row = tk.Frame(dlg); row.pack(pady=8)
+        tk.Button(row, text="Half Court", font=("Arial", 14), width=14,
                   command=lambda: pick("Half")).grid(row=0, column=0, padx=10)
-        tk.Button(btn_row, text="Full Court", font=("Arial", 14), width=14,
+        tk.Button(row, text="Full Court", font=("Arial", 14), width=14,
                   command=lambda: pick("Full")).grid(row=0, column=1, padx=10)
         
         dlg.protocol("WM_DELETE_WINDOW", lambda: pick("Half"))
@@ -57,19 +57,13 @@ class DunkVisionApp(tk.Tk):
         dlg.bind("<Return>", lambda e: pick(choice.get()))
         dlg.focus_force()
 
-
         dlg.wait_window(dlg)
         return choice["value"]
-    
-    def on_app_close(self):
-        self.destroy()
-       
 
     def build_ui(self,court_type):
         #placeholder layout
         self.grid_rowconfigure(0,weight=1)
-        self.grid_columnconfigure(0,weight=1)
-
+        self.grid_columnconfigure(0,weight=1
         self.court_frame = CourtFrame(self, court_type=court_type)
         self.court_frame.grid(row=0, column=0, sticky="nsew")
 
