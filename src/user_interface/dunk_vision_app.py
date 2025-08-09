@@ -17,31 +17,14 @@ class DunkVisionApp(tk.Tk):
         self.option_add("*Button.Foreground", "#000000")
         self.option_add("*Button.ActiveBackground","#d9d9d9")
         self.option_add("*Button.ActiveForeground", "#000000")
-       
-        self.withdraw()
-        self.after(0, self._choose_and_build)
 
-    def _choose_and_build(self):
-        try: 
-            court_type = self.prompt_user_for_court_type()
-            court_type = (court_type or "half").strip().lower()
-            print(f"[DV] court_type -> {court_type}")
-            self.build_ui(court_type)
-            print(f"[DV] build_ui done, now showing window")
-        except Exception:
-           tb = traceback.format_exc()
-           print(tb)
-           messagebox.showerror("Startup Error", tb)
-        finally:
-            self.deiconify()
-            self.update_idletasks()
-            self.state("normal")
-            self.lift()
-            try:
-                self.attributes("-topmost", True)
-                self.after(200, lambda: self.attributes("-topmost", False))
-            except Exception:
-                pass
+        print("[DV] showing chooser...")
+        court_type = self.prompt_user_for_court_type()
+        court_type = (court_type or "half").strip().lower()
+        print(f"[DV] court_type -> {court_type}")
+        
+        self.build_ui(court_type)
+        print(f"[DV] build_ui done, now showing window")
 
     def prompt_user_for_court_type(self) -> str:
         dlg = tk.Toplevel(self)
@@ -75,8 +58,11 @@ class DunkVisionApp(tk.Tk):
         dlg.bind("<Return>", lambda e: pick(choice.get()))
         dlg.focus_force()
 
+        print("[DV] waiting for chooser...")
         dlg.wait_window(dlg)
-        return choice.get()
+        val = choice.get()
+        print(f"[DV] chooser done, value -> {val}")
+        return val 
 
     def build_ui(self,court_type: str):
         self.grid_rowconfigure(0,weight=1)
