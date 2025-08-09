@@ -58,7 +58,7 @@ class DunkVisionApp(tk.Tk):
 
         tk.Label(dlg, text="Select Court Type:", font=("Arial", 18, "bold")).pack(pady=(20, 12))
         
-        choice = tk.StringVar(value="Half")  # Default to Half Court
+        choice = tk.StringVar(value="half")  # Default to Half Court
         
         def pick(val: str):
             choice.set(val)
@@ -66,17 +66,17 @@ class DunkVisionApp(tk.Tk):
         
         row = tk.Frame(dlg); row.pack(pady=8)
         tk.Button(row, text="Half Court", font=("Arial", 14), width=14,
-                  command=lambda: pick("Half")).grid(row=0, column=0, padx=10)
+                  command=lambda: pick("half")).grid(row=0, column=0, padx=10)
         tk.Button(row, text="Full Court", font=("Arial", 14), width=14,
-                  command=lambda: pick("Full")).grid(row=0, column=1, padx=10)
+                  command=lambda: pick("full")).grid(row=0, column=1, padx=10)
         
         dlg.protocol("WM_DELETE_WINDOW", lambda: pick("Half"))
-        dlg.bind("<Escape>", lambda e: pick("Half"))  # Default to Half Court on Escape
+        dlg.bind("<Escape>", lambda e: pick("half"))  # Default to Half Court on Escape
         dlg.bind("<Return>", lambda e: pick(choice.get()))
         dlg.focus_force()
 
         dlg.wait_window(dlg)
-        return choice["value"]
+        return choice.get()
 
     def build_ui(self,court_type: str):
         self.grid_rowconfigure(0,weight=1)
